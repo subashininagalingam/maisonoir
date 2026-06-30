@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Maison Noir — Luxury Salon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1320;
+  --ink-soft:#16223A;
+  --gold:#C9AD7C;
+  --gold-soft:#E8D6B0;
+  --ivory:#F6EFE4;
+  --champagne:#DCC9B6;
+  --burgundy:#7C5A8A;
+  --sage:#8FA98C;
+  --line:rgba(201,173,124,0.30);
+  --space-1:8px;--space-2:14px;--space-3:22px;--space-4:34px;--space-5:54px;--space-6:84px;
+  --radius:2px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse 900px 500px at 12% -10%, rgba(201,173,124,0.14), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 10%, rgba(138,150,196,0.08), transparent 55%),
+    var(--ink);
+  color:var(--ivory);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+::selection{background:var(--gold);color:var(--ink);}
+.eyebrow{
+  font-family:'Marcellus',serif;
+  font-size:11px;
+  letter-spacing:0.32em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:600;
+}
+h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:0.01em;}
+.stitch{
+  position:relative;height:1px;width:100%;
+  background:repeating-linear-gradient(90deg,var(--gold) 0 6px, transparent 6px 13px);
+  opacity:0.55;
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar{
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color:var(--gold);
+}
+
+::-webkit-scrollbar-track{
+    background-color: var(--ink);
+}
+ 
+/* ===== App shell ===== */
+.app{max-width:1180px;margin:0 auto;padding:0 var(--space-4);}
+.topnav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(23,16,18,0.86);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.topnav-inner{
+  max-width:1180px;margin:0 auto;padding:18px var(--space-4);
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.wordmark{font-family:'Marcellus',serif;font-size:18px;letter-spacing:0.22em;color:var(--ivory);}
+.wordmark span{color:var(--gold);}
+.tabs{display:flex;gap:28px;flex-wrap:wrap;}
+.tab-btn{
+  background:none;border:none;color:var(--champagne);opacity:0.65;
+  font-size:13px;letter-spacing:0.04em;cursor:pointer;padding:6px 2px;
+  border-bottom:1px solid transparent;transition:all .25s ease;
+  font-family:'Inter',sans-serif;
+}
+.tab-btn:hover{opacity:1;}
+.tab-btn.active{opacity:1;color:var(--gold);border-bottom-color:var(--gold);}
+.cta-pill{
+  font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;letter-spacing:0.05em;
+  background:var(--gold);color:var(--ink);padding:11px 22px;border-radius:30px;border:none;
+  cursor:pointer;transition:transform .2s ease, box-shadow .2s ease;
+  text-transform:uppercase;
+}
+.cta-pill:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(201,173,124,0.28);}
+.cta-ghost{
+  font-size:12.5px;font-weight:600;letter-spacing:0.05em;color:var(--gold);
+  background:transparent;border:1px solid var(--line);padding:10px 20px;border-radius:30px;cursor:pointer;
+  text-transform:uppercase;transition:border-color .2s ease;
+}
+.cta-ghost:hover{border-color:var(--gold);}
+ 
+.menu-btn{display:none;background:none;border:1px solid var(--line);width:42px;height:42px;border-radius:50%;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:4px;}
+.menu-btn span{display:block;width:16px;height:1px;background:var(--gold);transition:all .25s ease;}
+.menu-btn.open span:nth-child(1){transform:translateY(5px) rotate(45deg);}
+.menu-btn.open span:nth-child(2){opacity:0;}
+.menu-btn.open span:nth-child(3){transform:translateY(-5px) rotate(-45deg);}
+ 
+.mobile-drawer{
+  display:none;position:fixed;top:0;right:0;bottom:0;width:78%;max-width:320px;z-index:90;
+  background:var(--ink-soft);border-left:1px solid var(--line);
+  padding:90px 28px 28px;flex-direction:column;gap:6px;
+  transform:translateX(100%);transition:transform .35s ease;
+}
+.mobile-drawer.open{transform:translateX(0);}
+.mobile-drawer .tab-btn{
+  text-align:left;font-size:15px;padding:14px 4px;border-bottom:1px solid var(--line);opacity:0.85;
+}
+.mobile-drawer .tab-btn.active{opacity:1;}
+.drawer-scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:80;}
+.drawer-scrim.open{display:block;}
+ 
+.view{display:none;animation:fade .5s ease;}
+.view.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+ 
+/* ===== HOME ===== */
+.hero{
+  padding:var(--space-6) var(--space-4) var(--space-5);
+  display:grid;grid-template-columns:1.1fr 0.9fr;gap:var(--space-6);align-items:center;
+  border-bottom:1px solid var(--line);
+}
+.hero h1{font-size:clamp(40px,5.2vw,68px);line-height:1.05;color:var(--ivory);}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.hero p{margin-top:var(--space-3);color:var(--champagne);opacity:0.8;font-size:16px;max-width:440px;line-height:1.6;}
+.hero-ctas{display:flex;gap:16px;margin-top:var(--space-4);}
+.hero-art{
+  aspect-ratio:4/5;border:1px solid var(--line);position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#16223A 0%, #0B1320 70%);
+  display:flex;align-items:flex-end;padding:var(--space-3);
+  box-shadow:0 30px 70px rgba(0,0,0,0.55);
+}
+.hero-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.82;filter:saturate(0.92) contrast(1.04);}
+.hero-art .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(23,16,18,0) 35%,rgba(23,16,18,0.92) 100%);}
+.hero-art .tag{position:relative;z-index:2;}
+.hero-art:before{
+  content:'';position:absolute;inset:14px;border:1px solid var(--line);pointer-events:none;z-index:2;
+}
+.img-frame{position:relative;overflow:hidden;aspect-ratio:4/3;border:1px solid var(--line);}
+.img-frame img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(0.92) contrast(1.03);transition:transform .5s ease;}
+.img-frame:hover img{transform:scale(1.04);}
+.img-frame .corner{position:absolute;inset:8px;border:1px solid rgba(201,173,124,0.35);pointer-events:none;}
+.tag{font-family:'Marcellus',serif;font-size:11px;letter-spacing:0.25em;color:var(--gold-soft);}
+.stat-row{display:flex;gap:var(--space-5);margin-top:var(--space-5);padding-top:var(--space-4);border-top:1px solid var(--line);}
+.stat-row div b{display:block;font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--gold);}
+.stat-row div span{font-size:11px;letter-spacing:0.08em;color:var(--champagne);opacity:0.7;text-transform:uppercase;}
+ 
+.section{padding:var(--space-6) var(--space-4);}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:var(--space-4);gap:20px;flex-wrap:wrap;}
+.section-head h2{font-size:34px;}
+.section-head p{color:var(--champagne);opacity:0.7;font-size:14px;max-width:380px;}
+ 
+.offer-banner{
+  margin:0 var(--space-4);padding:16px var(--space-3);border:1px solid var(--gold);
+  background:rgba(201,173,124,0.10);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+.offer-banner span{font-size:13px;color:var(--champagne);}
+.offer-banner b{color:var(--gold-soft);}
+ 
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-3);}
+.service-card{
+  border:1px solid var(--line);background:rgba(255,255,255,0.02);
+  transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+  overflow:hidden;
+}
+.service-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,0.45);}
+.audience-tabs{display:flex;gap:10px;margin-bottom:var(--space-3);flex-wrap:wrap;}
+.aud-pill{
+  font-size:12px;letter-spacing:0.04em;color:var(--champagne);background:transparent;
+  border:1px solid var(--line);padding:9px 20px;border-radius:30px;cursor:pointer;transition:all .2s ease;
+  text-transform:uppercase;font-family:'Inter',sans-serif;
+}
+.aud-pill:hover{border-color:var(--gold);color:var(--ivory);}
+.aud-pill.active{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:600;}
+.service-card .audience{
+  position:absolute;top:10px;right:10px;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;
+  background:rgba(23,16,18,0.78);color:var(--gold-soft);border:1px solid var(--gold);padding:4px 9px;z-index:2;
+}
+.service-card .thumb{position:relative;aspect-ratio:16/10;overflow:hidden;}
+.service-card .thumb img{width:100%;height:100%;object-fit:cover;filter:saturate(0.9) contrast(1.03);transition:transform .5s ease;}
+.service-card:hover .thumb img{transform:scale(1.05);}
+.service-card .body{padding:var(--space-3);}
+.service-card .cat{font-size:10.5px;letter-spacing:0.18em;color:var(--gold);text-transform:uppercase;}
+.service-card h3{font-size:21px;margin-top:8px;}
+.service-card .desc{font-size:13px;color:var(--champagne);opacity:0.7;margin-top:8px;line-height:1.55;}
+.service-card .row{display:flex;justify-content:space-between;align-items:center;margin-top:var(--space-3);padding-top:14px;border-top:1px dashed var(--line);}
+.price{font-family:'Cormorant Garamond',serif;font-size:21px;color:var(--gold-soft);font-weight:600;}
+.mini-link{font-size:12px;color:var(--ivory);opacity:0.6;border-bottom:1px solid var(--line);cursor:pointer;}
+ 
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-3);}
+.review-card{border:1px solid var(--line);padding:var(--space-3);}
+.stars{color:var(--gold);font-size:13px;letter-spacing:2px;}
+.review-card p{font-size:13.5px;color:var(--champagne);opacity:0.85;margin-top:10px;line-height:1.6;}
+.review-card .who{margin-top:12px;font-size:12px;color:var(--gold-soft);}
+ 
+footer{border-top:1px solid var(--line);padding:var(--space-4);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+footer .eyebrow{display:block;margin-bottom:8px;}
+footer p{font-size:12px;color:var(--champagne);opacity:0.55;}
+ 
+/* WhatsApp float */
+.wa-float{
+  position:fixed;bottom:24px;right:24px;z-index:60;
+  width:52px;height:52px;border-radius:50%;background:#16223A;border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+.wa-float svg{width:24px;height:24px;}
+ 
+/* ===== SUCCESS POPUP MODAL ===== */
+.modal-scrim{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(11,19,32,0.72);backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-scrim.open{display:flex;}
+.modal-box{
+  background:var(--ink-soft);border:1px solid var(--gold);
+  max-width:380px;width:100%;padding:var(--space-4) var(--space-3) var(--space-3);
+  text-align:center;position:relative;
+  box-shadow:0 30px 70px rgba(0,0,0,0.55);
+  transform:translateY(10px) scale(0.97);opacity:0;
+  transition:transform .3s ease, opacity .3s ease;
+}
+.modal-scrim.open .modal-box{transform:translateY(0) scale(1);opacity:1;}
+.modal-box .ring{
+  width:62px;height:62px;border-radius:50%;border:1px solid var(--gold);margin:0 auto var(--space-3);
+  display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--gold);
+}
+.modal-box h3{font-size:23px;color:var(--ivory);}
+.modal-box p{font-size:13.5px;color:var(--champagne);opacity:0.8;margin-top:10px;line-height:1.6;}
+.modal-box .cta-pill{margin-top:var(--space-3);width:100%;}
+ 
+/* ===== STAFF / CALENDAR ===== */
+.staff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-3);}
+.staff-card{border:1px solid var(--line);padding:var(--space-3);cursor:pointer;transition:border-color .2s;}
+.staff-card.selected{border-color:var(--gold);background:rgba(201,173,124,0.06);}
+.staff-photo{aspect-ratio:1/1;background:linear-gradient(150deg,#16223A,#0B1320);border:1px solid var(--line);margin-bottom:12px;overflow:hidden;position:relative;}
+.staff-photo img{width:100%;height:100%;object-fit:cover;filter:saturate(0.9) contrast(1.03);}
+.staff-photo .init-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Marcellus',serif;color:var(--gold);font-size:22px;}
+ 
+/* ===== GALLERY / BEFORE-AFTER (Zarsima-style single rounded frame) ===== */
+.ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-3);}
+.ba-card{overflow:hidden;background:rgba(255,255,255,0.02);}
+.ba-pair{
+  display:grid;grid-template-columns:1fr 1fr;position:relative;
+  border-radius:22px;overflow:hidden;border:3px solid var(--gold-soft);
+  box-shadow:0 20px 45px rgba(0,0,0,0.5);
+}
+.ba-pair .half{position:relative;aspect-ratio:3/4;overflow:hidden;}
+.ba-pair .half img{width:100%;height:100%;object-fit:cover;filter:saturate(1.02) contrast(1.04);}
+.ba-pair .half.before img{filter:saturate(0.85) contrast(0.98) brightness(0.94);}
+.ba-pair .half{background:linear-gradient(150deg,var(--ink-soft),var(--ink));}
+.ba-pair .half .lbl{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  font-family:'Marcellus',serif;font-weight:700;font-size:20px;letter-spacing:0.03em;
+  text-transform:capitalize;color:#fff;
+  -webkit-text-stroke:1px var(--gold);
+  text-shadow:0 2px 10px rgba(0,0,0,0.7), 0 0 1px var(--gold);
+}
+.ba-pair .watermark{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;
+  text-align:center;pointer-events:none;
+}
+.ba-pair .watermark .wm-main{
+  font-family:'Marcellus',serif;font-size:17px;letter-spacing:0.15em;color:rgba(255,255,255,0.92);
+  text-shadow:0 2px 8px rgba(0,0,0,0.8);text-transform:uppercase;
+}
+.ba-pair .watermark .wm-main span{color:var(--gold-soft);}
+.ba-pair .watermark .wm-sub{
+  font-family:'Inter',sans-serif;font-size:8px;letter-spacing:0.22em;text-transform:uppercase;
+  color:rgba(255,255,255,0.75);margin-top:3px;text-shadow:0 1px 4px rgba(0,0,0,0.8);
+}
+.ba-meta{padding:14px 4px;display:flex;justify-content:space-between;align-items:center;}
+.ba-meta .nm{font-size:13.5px;color:var(--champagne);}
+.ba-meta .cat{font-size:10.5px;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;}
+ 
+/* ===== OFFERS PAGE ===== */
+.offer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3);}
+.offer-card{border:1px solid var(--line);position:relative;overflow:hidden;min-height:220px;display:flex;align-items:flex-end;}
+.offer-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(0.85) contrast(1.05);}
+.offer-card .scrim{position:absolute;inset:0;background:linear-gradient(0deg,rgba(23,16,18,0.92) 10%,rgba(23,16,18,0.15) 75%);}
+.offer-card .content{position:relative;z-index:2;padding:var(--space-3);width:100%;}
+.offer-card .tagline{font-family:'Marcellus',serif;font-size:10px;letter-spacing:0.2em;color:var(--gold-soft);text-transform:uppercase;}
+.offer-card h3{font-size:25px;margin-top:8px;color:var(--ivory);}
+.offer-card .exp{font-size:12px;color:var(--champagne);opacity:0.75;margin-top:6px;}
+.staff-card h3{font-size:18px;}
+.staff-card .role{font-size:11.5px;color:var(--gold);letter-spacing:0.06em;margin-top:3px;text-transform:uppercase;}
+.staff-card .meta{font-size:12px;color:var(--champagne);opacity:0.7;margin-top:8px;}
+.legend{display:flex;gap:18px;margin:var(--space-3) 0;flex-wrap:wrap;}
+.legend span{font-size:12px;color:var(--champagne);display:flex;align-items:center;gap:7px;}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+.dot.avail{background:var(--sage);}
+.dot.busy{background:var(--burgundy);}
+.dot.off{background:#3a322c;}
+ 
+.slot-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:var(--space-2);}
+.slot{
+  border:1px solid var(--line);padding:10px 4px;text-align:center;font-size:12.5px;cursor:pointer;
+  color:var(--champagne);transition:all .15s ease;
+}
+.slot.avail:hover{border-color:var(--sage);color:var(--ivory);}
+.slot.selected{background:var(--sage);color:var(--ink);border-color:var(--sage);font-weight:600;}
+.slot.busy{color:#6b5d4f;text-decoration:line-through;cursor:not-allowed;background:rgba(90,70,50,0.12);border-color:rgba(90,70,50,0.3);}
+.slot.off{color:#3a322c;cursor:not-allowed;}
+ 
+/* ===== BOOKING FLOW ===== */
+.stepper{display:flex;align-items:center;margin-bottom:var(--space-4);}
+.step-node{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;position:relative;}
+.step-circle{
+  width:30px;height:30px;border-radius:50%;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--champagne);
+  background:var(--ink);z-index:2;transition:all .3s ease;
+}
+.step-node.done .step-circle{background:var(--gold);border-color:var(--gold);color:var(--ink);}
+.step-node.current .step-circle{border-color:var(--gold);color:var(--gold);}
+.step-label{font-size:10.5px;letter-spacing:0.06em;color:var(--champagne);opacity:0.6;text-transform:uppercase;}
+.step-node.current .step-label,.step-node.done .step-label{opacity:1;}
+.step-connector{position:absolute;top:15px;left:50%;width:100%;height:1px;background:repeating-linear-gradient(90deg,var(--line) 0 6px, transparent 6px 13px);z-index:1;}
+.step-node.done .step-connector{background:var(--gold);opacity:0.7;}
+.step-node:last-child .step-connector{display:none;}
+ 
+.booking-panel{border:1px solid var(--line);padding:var(--space-4);min-height:380px;}
+.pick-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.pick-item{border:1px solid var(--line);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.pick-item:hover{border-color:var(--gold);}
+.pick-item.chosen{border-color:var(--gold);background:rgba(201,173,124,0.07);}
+.pick-item .nm{font-size:14px;}
+.pick-item .pr{font-size:13px;color:var(--gold-soft);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid input,.form-grid textarea{
+  width:100%;background:transparent;border:1px solid var(--line);color:var(--ivory);
+  padding:12px 14px;font-family:'Inter',sans-serif;font-size:13.5px;
+}
+.form-grid input:focus,.form-grid textarea:focus{outline:none;border-color:var(--gold);}
+.form-grid label{font-size:11px;letter-spacing:0.06em;color:var(--champagne);text-transform:uppercase;display:block;margin-bottom:6px;}
+.full{grid-column:1/-1;}
+.summary-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line);font-size:13.5px;}
+.summary-row span:first-child{color:var(--champagne);opacity:0.7;}
+.booking-actions{display:flex;justify-content:space-between;margin-top:var(--space-4);}
+.success{text-align:center;padding:var(--space-5) 0;}
+.success .ring{
+  width:70px;height:70px;border-radius:50%;border:1px solid var(--gold);margin:0 auto var(--space-3);
+  display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--gold);
+}
+.booking-id{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold-soft);margin-top:10px;letter-spacing:0.04em;font-weight:600;}
+ 
+/* ===== ADMIN ===== */
+.admin-shell{display:grid;grid-template-columns:220px 1fr;gap:var(--space-3);}
+.admin-side{border:1px solid var(--line);padding:var(--space-3);height:fit-content;}
+.admin-side a{display:block;font-size:13px;color:var(--champagne);padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer;}
+.admin-side a.active{color:var(--gold);}
+.admin-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:var(--space-3);}
+.kpi{border:1px solid var(--line);padding:16px;}
+.kpi b{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);display:block;font-weight:600;}
+.kpi span{font-size:11px;color:var(--champagne);opacity:0.7;text-transform:uppercase;letter-spacing:0.05em;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);padding:10px 12px;border-bottom:1px solid var(--line);}
+td{padding:12px;border-bottom:1px solid var(--line);color:var(--champagne);}
+.badge{padding:4px 10px;border-radius:20px;font-size:10.5px;text-transform:uppercase;letter-spacing:0.05em;}
+.badge.confirmed{background:rgba(138,150,196,0.15);color:var(--sage);border:1px solid var(--sage);}
+.badge.pending{background:rgba(201,173,124,0.12);color:var(--gold-soft);border:1px solid var(--gold);}
+.badge.cancelled{background:rgba(90,70,50,0.18);color:#cba78a;border:1px solid var(--burgundy);}
+ 
+@media(max-width:880px){
+  .hero{grid-template-columns:1fr;}
+  .grid-3,.staff-grid,.reviews,.ba-grid,.offer-grid{grid-template-columns:1fr;}
+  .pick-list{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .admin-shell{grid-template-columns:1fr;}
+  .admin-kpis{grid-template-columns:repeat(2,1fr);}
+  .slot-grid{grid-template-columns:repeat(3,1fr);}
+  #view-about .app > div{grid-template-columns:1fr !important;}
+  .tabs{display:none;}
+  .menu-btn{display:flex;}
+  .mobile-drawer{display:flex;}
+  .topnav-inner{padding:16px var(--space-2);}
+  .cta-pill{font-size:11px;padding:9px 16px;}
+  .app{padding:0 var(--space-2);}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="wordmark">MAISON <span>NOIR</span></div>
+    <div class="tabs">
+      <button class="tab-btn active" data-view="home">Home</button>
+      <button class="tab-btn" data-view="services">Services</button>
+      <button class="tab-btn" data-view="gallery">Gallery</button>
+      <button class="tab-btn" data-view="staff">Staff</button>
+      <button class="tab-btn" data-view="booking">Book</button>
+      <button class="tab-btn" data-view="offers">Offers</button>
+      <button class="tab-btn" data-view="about">About</button>
+      <button class="tab-btn" data-view="contact">Contact</button>
+      <button class="tab-btn" data-view="admin">Admin</button>
+    </div>
+    <button class="cta-pill" onclick="goTo('booking')">Book Appointment</button>
+    <button class="menu-btn" id="menu-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="drawer-scrim" id="drawer-scrim"></div>
+<nav class="mobile-drawer" id="mobile-drawer">
+  <button class="tab-btn active" data-view="home">Home</button>
+  <button class="tab-btn" data-view="services">Services</button>
+  <button class="tab-btn" data-view="gallery">Gallery</button>
+  <button class="tab-btn" data-view="staff">Staff</button>
+  <button class="tab-btn" data-view="booking">Book</button>
+  <button class="tab-btn" data-view="offers">Offers</button>
+  <button class="tab-btn" data-view="about">About</button>
+  <button class="tab-btn" data-view="contact">Contact</button>
+  <button class="tab-btn" data-view="admin">Admin</button>
+</nav>
+
+<!-- HOME -->
+<section class="view active" id="view-home">
+  <div class="app">
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Est. 2012 — Tamil Nadu · Dindigul</div>
+        <h1 style="margin-top:14px;">Where every<br><em>detail</em> is considered.</h1>
+        <p>A private studio for hair, skin and bridal artistry — built on craft, not volume. Reserve your chair with the stylist who knows your hair best.</p>
+        <div class="hero-ctas">
+          <button class="cta-pill" onclick="goTo('booking')">Book Appointment</button>
+          <button class="cta-ghost" onclick="goTo('services')">View Services</button>
+        </div>
+        <div class="stat-row">
+          <div><b>14</b><span>Master Stylists</span></div>
+          <div><b>4.9</b><span>Client Rating</span></div>
+          <div><b>3‑Click</b><span>Booking</span></div>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=900&q=80" alt="Maison Noir studio interior">
+        <div class="scrim"></div>
+        <span class="tag">THE ATELIER — CHAIR 04</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="offer-banner">
+    <span>✦ <b>Bridal Season Offer</b> — 20% off full bridal packages booked before July 31</span>
+    <button class="cta-ghost" onclick="goTo('offers')">See Offer</button>
+  </div>
+
+  <div class="section app">
+    <div class="section-head">
+      <div><div class="eyebrow">Signature Services</div><h2 style="margin-top:8px;">Crafted, not templated</h2></div>
+      <p>Every service is performed by a senior stylist, never an assistant.</p>
+    </div>
+    <div class="grid-3">
+      <div class="service-card">
+        <div class="thumb"><img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=600&q=80" alt="Precision haircut"></div>
+        <div class="body">
+        <div class="cat">Hair</div><h3>Precision Cut &amp; Style</h3>
+        <div class="desc">A consultation-led cut tailored to face shape and lifestyle, finished with a signature blow-dry.</div>
+        <div class="row"><span class="price">₹2,200</span><span class="mini-link" onclick="goTo('services')">Details</span></div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="thumb"><img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=600&q=80" alt="Balayage colour"></div>
+        <div class="body">
+        <div class="cat">Colour</div><h3>Balayage &amp; Gloss</h3>
+        <div class="desc">Hand-painted dimensional colour with an Olaplex bond treatment and gloss finish.</div>
+        <div class="row"><span class="price">₹6,800</span><span class="mini-link" onclick="goTo('services')">Details</span></div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="thumb"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80" alt="Bridal styling"></div>
+        <div class="body">
+        <div class="cat">Bridal</div><h3>Bridal Trial &amp; Day‑Of</h3>
+        <div class="desc">Full trial session followed by wedding-day hair and makeup with a dedicated artist.</div>
+        <div class="row"><span class="price">₹24,000</span><span class="mini-link" onclick="goTo('services')">Details</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section app">
+    <div class="section-head">
+      <div><div class="eyebrow">Client Voices</div><h2 style="margin-top:8px;">In their words</h2></div>
+    </div>
+    <div class="reviews">
+      <div class="review-card"><div class="stars">★★★★★</div><p>The most considered, unhurried salon experience I've had in Mumbai. My colourist remembers everything.</p><div class="who">— Ananya R.</div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><p>Booking took under a minute and the reminder texts meant I never missed a slot.</p><div class="who">— Kabir S.</div></div>
+      <div class="review-card"><div class="stars">★★★★☆</div><p>Bridal trial was worth every rupee — calm space, no rush, exactly the look I wanted.</p><div class="who">— Priya M.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="view" id="view-services">
+  <div class="section app">
+    <div class="section-head">
+      <div><div class="eyebrow">Services</div><h2 style="margin-top:8px;">Choose your ritual</h2></div>
+      <p>Transparent pricing, no surprises at the chair.</p>
+    </div>
+    <div class="audience-tabs" id="audience-tabs">
+      <button class="aud-pill active" data-aud="all">All</button>
+      <button class="aud-pill" data-aud="women">Women</button>
+      <button class="aud-pill" data-aud="men">Men</button>
+      <button class="aud-pill" data-aud="kids">Kids</button>
+    </div>
+    <div class="grid-3" id="services-list"></div>
+  </div>
+</section>
+
+<!-- STAFF -->
+<section class="view" id="view-staff">
+  <div class="section app">
+    <div class="section-head">
+      <div><div class="eyebrow">Our Stylists</div><h2 style="margin-top:8px;">Select an artist</h2></div>
+      <p>Real-time availability, no double-bookings.</p>
+    </div>
+    <div class="staff-grid" id="staff-list"></div>
+
+    <div style="margin-top:var(--space-5);">
+      <h3 style="font-size:20px;">Availability — <span id="staff-cal-name" style="color:var(--gold-soft);">Select a stylist</span></h3>
+      <div class="stitch" style="margin:14px 0;"></div>
+      <div class="legend">
+        <span><span class="dot avail"></span>Available</span>
+        <span><span class="dot busy"></span>Booked</span>
+        <span><span class="dot off"></span>Off duty</span>
+      </div>
+      <div class="slot-grid" id="cal-slots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="view" id="view-booking">
+  <div class="section app">
+    <div class="section-head">
+      <div><div class="eyebrow">Reserve Your Chair</div><h2 style="margin-top:8px;">Book in three clicks</h2></div>
+    </div>
+
+    <div class="stepper" id="stepper"></div>
+
+    <div class="booking-panel" id="booking-panel"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="view" id="view-about">
+  <div class="section app" style="max-width:900px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);align-items:center;">
+      <div>
+        <div class="eyebrow">Our Story</div>
+        <h2 style="margin-top:10px;font-size:38px;">A studio built on restraint.</h2>
+        <div class="stitch" style="margin:22px 0;"></div>
+        <p style="color:var(--champagne);opacity:0.85;line-height:1.8;font-size:15px;">Maison Noir opened in 2012 with a single chair and a belief that luxury in hair care is not about volume — it's about attention. Every stylist on our floor trains for a minimum of three years under a senior artist before taking solo clients. We keep our books deliberately small: fourteen stylists, one studio, no franchising.</p>
+        <p style="color:var(--champagne);opacity:0.85;line-height:1.8;font-size:15px;margin-top:16px;">Our palette — black, gold and ivory — reflects the same philosophy as our service: nothing loud, everything intentional.</p>
+      </div>
+      <div class="img-frame" style="aspect-ratio:3/4;">
+        <img src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=700&q=80" alt="Studio interior">
+        <div class="corner"></div>
+      </div>
+    </div>
+    <div class="stat-row" style="border-top:1px solid var(--line);">
+      <div><b>2012</b><span>Founded</span></div>
+      <div><b>14</b><span>Senior Stylists</span></div>
+      <div><b>1</b><span>Flagship Studio</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="view" id="view-contact">
+  <div class="section app">
+    <div class="section-head">
+      <div><div class="eyebrow">Visit Us</div><h2 style="margin-top:8px;">Get in touch</h2></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+      <div>
+        <div class="form-grid">
+          <div class="full"><label>Full Name</label><input id="contact-name" placeholder="Your name" required></div>
+          <div class="full"><label>Email</label><input id="contact-email" placeholder="you@email.com" required></div>
+          <div class="full"><label>Message</label><textarea id="contact-message" rows="5" placeholder="How can we help?" required></textarea></div>
+          <div class="full" style="display:flex;gap:14px;">
+            <button class="cta-pill" onclick="sendContactMessage()">Send Message</button>
+            <button class="cta-ghost" onclick="window.open('https://wa.me/919876543210?text=' + encodeURIComponent('Hi Maison Noir, I would like to book an appointment.'), '_blank')">WhatsApp Us</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="position:relative;height:100%;min-height:280px;border:1px solid var(--line);overflow:hidden;">
+          <iframe src="https://maps.google.com/maps?q=Dindigul%20Tamil%20Nadu&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            loading="lazy"
+            style="width:100%;height:100%;min-height:280px;border:0;display:block;filter:grayscale(0.15) contrast(1.05);">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="view" id="view-gallery">
+  <div class="section app">
+    <div class="section-head">
+      <div><div class="eyebrow">Transformations</div><h2 style="margin-top:8px;">Before &amp; After</h2></div>
+      <p>Drag-style reveal of each finish — same look, before the chair and after.</p>
+    </div>
+    <div class="ba-grid">
+
+      <div class="ba-card">
+        <div class="ba-pair">
+          <div class="half before"><img src="https://images.unsplash.com/photo-1595959183082-7b570b7e08e2?w=600&q=80" alt="Before balayage" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">Before</span></div>
+          <div class="half"><img src="https://images.unsplash.com/photo-1595959183082-7b570b7e08e2?w=600&q=80" alt="After balayage" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">After</span></div>
+          <div class="divider"></div>
+        </div>
+        <div class="ba-meta"><span class="nm">Balayage Transformation</span><span class="cat">Colour</span></div>
+      </div>
+
+      <div class="ba-card">
+        <div class="ba-pair">
+          <div class="half before"><img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=600&q=80" alt="Before haircut" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">Before</span></div>
+          <div class="half"><img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=600&q=80" alt="After haircut" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">After</span></div>
+          <div class="divider"></div>
+        </div>
+        <div class="ba-meta"><span class="nm">Precision Layer Cut</span><span class="cat">Hair</span></div>
+      </div>
+
+      <div class="ba-card">
+        <div class="ba-pair">
+          <div class="half before"><img src="https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=600&q=80" alt="Before bridal" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">Before</span></div>
+          <div class="half"><img src="https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=600&q=80" alt="After bridal" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">After</span></div>
+          <div class="divider"></div>
+        </div>
+        <div class="ba-meta"><span class="nm">Bridal Hair &amp; Makeup</span><span class="cat">Bridal</span></div>
+      </div>
+
+      <div class="ba-card">
+        <div class="ba-pair">
+          <div class="half before"><img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=600&q=80" alt="Before keratin" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">Before</span></div>
+          <div class="half"><img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=600&q=80" alt="After keratin" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">After</span></div>
+          <div class="divider"></div>
+        </div>
+        <div class="ba-meta"><span class="nm">Keratin Smoothing</span><span class="cat">Treatment</span></div>
+      </div>
+
+      <div class="ba-card">
+        <div class="ba-pair">
+          <div class="half before"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80" alt="Before beard sculpt" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">Before</span></div>
+          <div class="half"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80" alt="After beard sculpt" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">After</span></div>
+          <div class="divider"></div>
+        </div>
+        <div class="ba-meta"><span class="nm">Beard Sculpt</span><span class="cat">Grooming · Men</span></div>
+      </div>
+
+      <div class="ba-card">
+        <div class="ba-pair">
+          <div class="half before"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80" alt="Before facial" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">Before</span></div>
+          <div class="half"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80" alt="After facial" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">After</span></div>
+          <div class="divider"></div>
+        </div>
+        <div class="ba-meta"><span class="nm">Signature Facial Glow</span><span class="cat">Skin · Women</span></div>
+      </div>
+
+      <div class="ba-card">
+        <div class="ba-pair">
+          <div class="half before"><img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80" alt="Before kids cut" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">Before</span></div>
+          <div class="half"><img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80" alt="After kids cut" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">After</span></div>
+          <div class="divider"></div>
+        </div>
+        <div class="ba-meta"><span class="nm">First Haircut Special</span><span class="cat">Hair · Kids</span></div>
+      </div>
+
+      <div class="ba-card">
+        <div class="ba-pair">
+          <div class="half before"><img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=600&q=80" alt="Before men's cut" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">Before</span></div>
+          <div class="half"><img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=600&q=80" alt="After men's cut" onerror="this.style.opacity=0;this.parentElement.style.background='linear-gradient(150deg,var(--ink-soft),var(--ink))'"><span class="lbl">After</span></div>
+          <div class="divider"></div>
+        </div>
+        <div class="ba-meta"><span class="nm">Sharp Fade &amp; Style</span><span class="cat">Hair · Men</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- OFFERS -->
+<section class="view" id="view-offers">
+  <div class="section app">
+    <div class="section-head">
+      <div><div class="eyebrow">Offers</div><h2 style="margin-top:8px;">Current promotions</h2></div>
+      <p>Seasonal packages, refreshed monthly.</p>
+    </div>
+    <div class="offer-grid">
+      <div class="offer-card">
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80" alt="Bridal offer">
+        <div class="scrim"></div>
+        <div class="content">
+          <div class="tagline">Bridal Season</div>
+          <h3>20% off full bridal packages</h3>
+          <div class="exp">Valid on bookings made before July 31</div>
+        </div>
+      </div>
+      <div class="offer-card">
+        <img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=800&q=80" alt="Colour offer">
+        <div class="scrim"></div>
+        <div class="content">
+          <div class="tagline">First Visit</div>
+          <h3>₹500 off your first colour service</h3>
+          <div class="exp">New clients only · one-time use</div>
+        </div>
+      </div>
+      <div class="offer-card">
+        <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80" alt="Facial offer">
+        <div class="scrim"></div>
+        <div class="content">
+          <div class="tagline">Refer a Friend</div>
+          <h3>Earn 200 loyalty points per referral</h3>
+          <div class="exp">Redeemable against any service</div>
+        </div>
+      </div>
+      <div class="offer-card">
+        <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&q=80" alt="Grooming offer">
+        <div class="scrim"></div>
+        <div class="content">
+          <div class="tagline">Weekday Special</div>
+          <h3>15% off grooming, Tue–Thu</h3>
+          <div class="exp">Walk-ins and bookings welcome</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN -->
+<section class="view" id="view-admin">
+  <div class="section app">
+    <div class="section-head">
+      <div><div class="eyebrow">Admin Console</div><h2 style="margin-top:8px;" id="admin-title">Dashboard</h2></div>
+    </div>
+    <div class="admin-shell">
+      <div class="admin-side" id="admin-side">
+        <a class="active" data-sec="dashboard">Dashboard</a>
+        <a data-sec="appointments">Appointments</a>
+        <a data-sec="staffSchedule">Staff Schedule</a>
+        <a data-sec="customers">Customers</a>
+        <a data-sec="servicesPricing">Services &amp; Pricing</a>
+        <a data-sec="offers">Offers</a>
+        <a data-sec="reports">Reports</a>
+      </div>
+      <div id="admin-content"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+    <div><span class="eyebrow">Maison Noir</span><p> Dindigul, Tamil Nadu · Tue–Sun, 10am–8pm</p></div>
+    <p>© 2026 Maison Noir Studio. All rights reserved.</p>
+  </footer>
+
+<div class="modal-scrim" id="success-modal">
+  <div class="modal-box">
+    <div class="ring">✓</div>
+    <h3>Message Sent</h3>
+    <p id="success-modal-text">Thank you! Your message has been sent successfully. We'll get back to you shortly.</p>
+    <button class="cta-pill" onclick="closeSuccessModal()">Continue</button>
+  </div>
+</div>
+
+<div class="wa-float" title="Chat on WhatsApp" onclick="window.open('https://wa.me/919876543210?text=' + encodeURIComponent('Hi Maison Noir, I would like to book an appointment.'), '_blank')">
+  <svg viewBox="0 0 24 24" fill="#25D366"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.04c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.79-4.18-4.94-4.37-.14-.2-1.18-1.57-1.18-3 0-1.42.74-2.12 1-2.41.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.58.81 2 .88 2.14.07.15.12.32.02.52-.1.2-.15.32-.29.49-.15.18-.31.4-.44.53-.15.15-.3.31-.13.61.17.29.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.36 1.46.29.15.46.13.63-.07.17-.2.73-.85.93-1.14.2-.29.39-.24.65-.14.27.1 1.69.8 1.98.94.29.15.48.22.55.34.07.13.07.73-.17 1.41z"/></svg>
+</div>
+
+<script>
+const views=['home','services','gallery','staff','booking','offers','about','contact','admin'];
+const menuBtn=document.getElementById('menu-btn');
+const drawer=document.getElementById('mobile-drawer');
+const scrim=document.getElementById('drawer-scrim');
+function openDrawer(){menuBtn.classList.add('open');drawer.classList.add('open');scrim.classList.add('open');}
+function closeDrawer(){menuBtn.classList.remove('open');drawer.classList.remove('open');scrim.classList.remove('open');}
+menuBtn.addEventListener('click',()=>{drawer.classList.contains('open')?closeDrawer():openDrawer();});
+scrim.addEventListener('click',closeDrawer);
+
+function goTo(v){
+  views.forEach(x=>document.getElementById('view-'+x).classList.toggle('active',x===v));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+  closeDrawer();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>goTo(b.dataset.view)));
+
+function sendContactMessage(){
+  const name=document.getElementById('contact-name').value.trim();
+  const email=document.getElementById('contact-email').value.trim();
+  const msg=document.getElementById('contact-message').value.trim();
+  if(!name||!email||!msg){
+    window.alert('Please fill in your name, email and message before sending.');
+    return;
+  }
+  document.getElementById('success-modal-text').textContent='Thank you, '+name+'! Your message has been sent successfully. We\'ll get back to you shortly.';
+  document.getElementById('success-modal').classList.add('open');
+  document.getElementById('contact-name').value='';
+  document.getElementById('contact-email').value='';
+  document.getElementById('contact-message').value='';
+}
+function closeSuccessModal(){
+  document.getElementById('success-modal').classList.remove('open');
+  goTo('home');
+}
+document.getElementById('success-modal').addEventListener('click',(e)=>{
+  if(e.target.id==='success-modal') closeSuccessModal();
+});
+
+/* ===== DATA ===== */
+const SERVICES=[
+  {cat:'Hair',for:'women',name:'Precision Cut & Style',desc:'Consultation-led cut tailored to face shape and lifestyle, finished with a signature blow-dry.',price:2200,dur:'60 min',img:'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=500&q=80'},
+  {cat:'Hair',for:'women',name:'Keratin Smoothing',desc:'Frizz-free, glass-finish treatment lasting up to 4 months.',price:9500,dur:'150 min',img:'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=500&q=80'},
+  {cat:'Colour',for:'women',name:'Balayage & Gloss',desc:'Hand-painted dimensional colour with bond treatment and gloss finish.',price:6800,dur:'180 min',img:'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=500&q=80'},
+  {cat:'Colour',for:'women',name:'Root Touch-Up',desc:'Single-process colour refresh for regrowth.',price:2800,dur:'75 min',img:'https://images.unsplash.com/photo-1595959183082-7b570b7e08e2?w=500&q=80'},
+  {cat:'Skin',for:'women',name:'Signature Facial',desc:'Deep-cleanse facial with gold-infused serum and facial massage.',price:3500,dur:'60 min',img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=500&q=80'},
+  {cat:'Bridal',for:'women',name:'Bridal Trial & Day-Of',desc:'Full trial session followed by wedding-day hair and makeup with a dedicated artist.',price:24000,dur:'Full day',img:'https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=500&q=80'},
+  {cat:'Skin',for:'women',name:'Bridal Glow Package',desc:'3-session pre-wedding skin prep programme.',price:14000,dur:'3 sessions',img:'https://images.unsplash.com/photo-1559599101-f09722fb4948?w=500&q=80'},
+  {cat:'Hair',for:'men',name:'Classic Cut & Skin Fade',desc:'Sharp scissor-and-clipper cut with a precision skin fade finish.',price:1500,dur:'45 min',img:'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=500&q=80'},
+  {cat:'Grooming',for:'men',name:'Beard Sculpt & Hot Towel',desc:'Precision beard shaping with a classic hot towel finish.',price:1200,dur:'40 min',img:'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=500&q=80'},
+  {cat:'Skin',for:'men',name:"Men's Refresh Facial",desc:'De-tan and deep-cleanse facial built for daily grooming routines.',price:2200,dur:'45 min',img:'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=500&q=80'},
+  {cat:'Colour',for:'men',name:'Grey Coverage Colour',desc:'Natural-finish colour to blend greys without looking flat.',price:1800,dur:'40 min',img:'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=500&q=80'},
+  {cat:'Hair',for:'kids',name:'First Haircut Special',desc:'A gentle, patient first salon visit with a keepsake lock of hair.',price:700,dur:'30 min',img:'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=500&q=80'},
+  {cat:'Hair',for:'kids',name:'Fun Cut & Style (Under 12)',desc:'Quick, comfortable cuts in a relaxed, kid-friendly chair setup.',price:900,dur:'30 min',img:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&q=80'},
+  {cat:'Skin',for:'kids',name:'Mini Mani-Pedi',desc:'Gentle nail care and polish, formulated safe for young skin.',price:1200,dur:'45 min',img:'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=500&q=80'}
+];
+const AUDIENCE_LABEL={all:'All Services',women:'Women',men:'Men',kids:'Kids'};
+let currentAudience='all';
+const STAFF=[
+  {name:'Vikram S.',role:'Master Colourist',exp:'12 yrs experience',init:'VS',img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80'},
+  {name:'Meera J.',role:'Senior Stylist',exp:'9 yrs experience',init:'MJ',img:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80'},
+  {name:'Anaya K.',role:'Bridal Artist',exp:'7 yrs experience',init:'AK',img:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80'},
+];
+const TIMES=['10:00','11:00','12:00','1:00','2:00','3:00','4:00','5:00','6:00','7:00'];
+// deterministic mock status per staff
+function slotStatus(staffIdx,i){
+  const pattern=[
+    ['avail','avail','busy','avail','off','avail','busy','avail','avail','off'],
+    ['busy','avail','avail','avail','avail','off','off','avail','busy','avail'],
+    ['avail','off','avail','busy','avail','avail','avail','off','avail','busy'],
+  ];
+  return pattern[staffIdx][i];
+}
+
+/* ===== RENDER SERVICES (filterable by audience) ===== */
+const svcList=document.getElementById('services-list');
+function renderServices(){
+  svcList.innerHTML='';
+  const list = currentAudience==='all' ? SERVICES : SERVICES.filter(s=>s.for===currentAudience);
+  list.forEach(s=>{
+    const el=document.createElement('div');
+    el.className='service-card';
+    el.innerHTML=`<div class="thumb"><span class="audience">${s.for}</span><img src="${s.img}" alt="${s.name}"></div><div class="body"><div class="cat">${s.cat}</div><h3>${s.name}</h3><div class="desc">${s.desc} · ${s.dur}</div>
+    <div class="row"><span class="price">₹${s.price.toLocaleString('en-IN')}</span><span class="mini-link" onclick="goTo('booking')">Book</span></div></div>`;
+    svcList.appendChild(el);
+  });
+}
+document.querySelectorAll('.aud-pill').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    currentAudience=btn.dataset.aud;
+    document.querySelectorAll('.aud-pill').forEach(b=>b.classList.toggle('active',b===btn));
+    renderServices();
+  });
+});
+renderServices();
+
+/* ===== RENDER STAFF ===== */
+const staffList=document.getElementById('staff-list');
+let selectedStaffIdx=null;
+STAFF.forEach((s,i)=>{
+  const el=document.createElement('div');
+  el.className='staff-card';
+  el.innerHTML=`<div class="staff-photo"><img src="${s.img}" alt="${s.name}" onerror="this.style.display='none'"><div class="init-fallback">${s.init}</div></div><h3>${s.name}</h3><div class="role">${s.role}</div><div class="meta">${s.exp}</div>`;
+  el.addEventListener('click',()=>selectStaff(i));
+  staffList.appendChild(el);
+});
+function selectStaff(i){
+  selectedStaffIdx=i;
+  document.querySelectorAll('.staff-card').forEach((c,idx)=>c.classList.toggle('selected',idx===i));
+  document.getElementById('staff-cal-name').textContent=STAFF[i].name;
+  renderCalSlots(i);
+}
+function renderCalSlots(staffIdx){
+  const wrap=document.getElementById('cal-slots');
+  wrap.innerHTML='';
+  TIMES.forEach((t,i)=>{
+    const status=slotStatus(staffIdx,i);
+    const d=document.createElement('div');
+    d.className='slot '+status;
+    d.textContent=t;
+    wrap.appendChild(d);
+  });
+}
+selectStaff(0);
+
+/* ===== BOOKING FLOW STATE MACHINE ===== */
+const STEPS=['Service','Stylist','Date & Time','Your Details','Confirm'];
+let bk={step:0,service:null,staff:null,time:null,name:'',phone:'',email:''};
+function renderStepper(){
+  const s=document.getElementById('stepper');
+  s.innerHTML='';
+  STEPS.forEach((label,i)=>{
+    const node=document.createElement('div');
+    node.className='step-node'+(i<bk.step?' done':i===bk.step?' current':'');
+    node.innerHTML=`<div class="step-connector"></div><div class="step-circle">${i<bk.step?'✓':i+1}</div><div class="step-label">${label}</div>`;
+    s.appendChild(node);
+  });
+}
+function renderBookingPanel(){
+  const p=document.getElementById('booking-panel');
+  if(bk.step===0){
+    p.innerHTML=`<div class="pick-list">${SERVICES.slice(0,6).map((s,i)=>`
+      <div class="pick-item ${bk.service===i?'chosen':''}" onclick="pickService(${i})">
+        <div><div class="nm">${s.name}</div><div style="font-size:11px;color:var(--champagne);opacity:0.6;margin-top:3px;">${s.cat} · ${s.dur}</div></div>
+        <div class="pr">₹${s.price.toLocaleString('en-IN')}</div>
+      </div>`).join('')}</div>
+      <div class="booking-actions"><span></span><button class="cta-pill" ${bk.service===null?'disabled style="opacity:.4;cursor:not-allowed;"':''} onclick="nextStep()">Continue</button></div>`;
+  } else if(bk.step===1){
+    p.innerHTML=`<div class="pick-list">${STAFF.map((s,i)=>`
+      <div class="pick-item ${bk.staff===i?'chosen':''}" onclick="pickStaff(${i})">
+        <div><div class="nm">${s.name}</div><div style="font-size:11px;color:var(--champagne);opacity:0.6;margin-top:3px;">${s.role}</div></div>
+        <div class="pr" style="color:var(--sage);">●</div>
+      </div>`).join('')}</div>
+      <div class="booking-actions"><button class="cta-ghost" onclick="prevStep()">Back</button><button class="cta-pill" ${bk.staff===null?'disabled style="opacity:.4;cursor:not-allowed;"':''} onclick="nextStep()">Continue</button></div>`;
+  } else if(bk.step===2){
+    const idx = bk.staff ?? 0;
+    let slotsHtml='';
+    TIMES.forEach((t,i)=>{
+      const status=slotStatus(idx,i);
+      const isSel = bk.time===t;
+      slotsHtml+=`<div class="slot ${isSel?'selected':status}" ${status!=='avail'?'':`onclick="pickTime('${t}')"`}>${t}</div>`;
+    });
+    p.innerHTML=`<div class="eyebrow">Available Slots — ${STAFF[idx].name}</div>
+      <div class="legend" style="margin-top:14px;"><span><span class="dot avail"></span>Available</span><span><span class="dot busy"></span>Booked</span><span><span class="dot off"></span>Off duty</span></div>
+      <div class="slot-grid">${slotsHtml}</div>
+      <div class="booking-actions"><button class="cta-ghost" onclick="prevStep()">Back</button><button class="cta-pill" ${!bk.time?'disabled style="opacity:.4;cursor:not-allowed;"':''} onclick="nextStep()">Continue</button></div>`;
+  } else if(bk.step===3){
+    p.innerHTML=`<div class="form-grid">
+      <div><label>Full Name</label><input id="f-name" value="${bk.name}" placeholder="Your name"></div>
+      <div><label>Phone</label><input id="f-phone" value="${bk.phone}" placeholder="+91 ..."></div>
+      <div class="full"><label>Email</label><input id="f-email" value="${bk.email}" placeholder="you@email.com"></div>
+      </div>
+      <div class="booking-actions"><button class="cta-ghost" onclick="prevStep()">Back</button><button class="cta-pill" onclick="captureDetails()">Review Booking</button></div>`;
+  } else if(bk.step===4){
+    const s=SERVICES[bk.service], st=STAFF[bk.staff];
+    p.innerHTML=`<div class="summary-row"><span>Service</span><span>${s.name}</span></div>
+      <div class="summary-row"><span>Stylist</span><span>${st.name}</span></div>
+      <div class="summary-row"><span>Date &amp; Time</span><span>Today · ${bk.time}</span></div>
+      <div class="summary-row"><span>Name</span><span>${bk.name||'—'}</span></div>
+      <div class="summary-row"><span>Phone</span><span>${bk.phone||'—'}</span></div>
+      <div class="summary-row" style="border-bottom:none;"><span>Total</span><span class="price">₹${s.price.toLocaleString('en-IN')}</span></div>
+      <div class="booking-actions"><button class="cta-ghost" onclick="prevStep()">Back</button><button class="cta-pill" onclick="confirmBooking()">Confirm Booking</button></div>`;
+  } else if(bk.step===5){
+    const id='MN-'+Math.floor(100000+Math.random()*899999);
+    p.innerHTML=`<div class="success">
+      <div class="ring">✓</div>
+      <h3 style="font-size:24px;">Booking Confirmed</h3>
+      <p style="color:var(--champagne);opacity:0.75;margin-top:8px;font-size:13.5px;">A confirmation has been sent via SMS and email. We'll see you soon.</p>
+      <div class="booking-id">${id}</div>
+      <div style="margin-top:var(--space-4);"><button class="cta-pill" onclick="resetBooking()">Book Another</button></div>
+    </div>`;
+  }
+}
+function pickService(i){bk.service=i;render();}
+function pickStaff(i){bk.staff=i;render();}
+function pickTime(t){bk.time=t;render();}
+function captureDetails(){
+  bk.name=document.getElementById('f-name').value;
+  bk.phone=document.getElementById('f-phone').value;
+  bk.email=document.getElementById('f-email').value;
+  bk.step=4;render();
+}
+function nextStep(){bk.step++;render();}
+function prevStep(){bk.step--;render();}
+function confirmBooking(){bk.step=5;renderStepper2();render();}
+function resetBooking(){bk={step:0,service:null,staff:null,time:null,name:'',phone:'',email:''};render();}
+function renderStepper2(){document.getElementById('stepper').style.display='none';}
+function render(){
+  if(bk.step<5){document.getElementById('stepper').style.display='flex';renderStepper();}
+  renderBookingPanel();
+}
+render();
+
+/* ===== ADMIN PANEL ROUTING ===== */
+const ADMIN_TITLES={dashboard:'Dashboard',appointments:'Appointments',staffSchedule:'Staff Schedule',customers:'Customers',servicesPricing:'Services & Pricing',offers:'Offers',reports:'Reports'};
+const APPOINTMENTS=[
+  {time:'10:00 AM',client:'Ananya R.',service:'Balayage & Gloss',staff:'Vikram S.',status:'confirmed'},
+  {time:'11:30 AM',client:'Kabir S.',service:'Classic Cut & Skin Fade',staff:'Meera J.',status:'confirmed'},
+  {time:'1:00 PM',client:'Priya M.',service:'Bridal Trial',staff:'Anaya K.',status:'pending'},
+  {time:'2:30 PM',client:'Rohan D.',service:'Beard Sculpt',staff:'Vikram S.',status:'cancelled'},
+  {time:'4:00 PM',client:'Sara F.',service:'Keratin Smoothing',staff:'Meera J.',status:'confirmed'},
+  {time:'5:15 PM',client:'Dev K. (age 7)',service:'First Haircut Special',staff:'Meera J.',status:'confirmed'},
+];
+const CUSTOMERS=[
+  {name:'Ananya R.',visits:14,points:680,last:'2 weeks ago'},
+  {name:'Kabir S.',visits:6,points:240,last:'1 month ago'},
+  {name:'Priya M.',visits:2,points:90,last:'5 days ago'},
+  {name:'Sara F.',visits:21,points:1120,last:'Yesterday'},
+];
+const STAFF_SCHEDULE=[
+  {name:'Vikram S.',hours:'10:00 AM – 7:00 PM',off:'Monday'},
+  {name:'Meera J.',hours:'10:00 AM – 6:30 PM',off:'Tuesday'},
+  {name:'Anaya K.',hours:'11:00 AM – 8:00 PM',off:'Sunday'},
+];
+
+function badgeHtml(status){
+  const map={confirmed:'Confirmed',pending:'Pending',cancelled:'Cancelled'};
+  return `<span class="badge ${status}">${map[status]}</span>`;
+}
+
+function renderAdmin(sec){
+  const c=document.getElementById('admin-content');
+  document.getElementById('admin-title').textContent=ADMIN_TITLES[sec];
+  document.querySelectorAll('#admin-side a').forEach(a=>a.classList.toggle('active',a.dataset.sec===sec));
+
+  if(sec==='dashboard'){
+    c.innerHTML=`<div class="admin-kpis">
+        <div class="kpi"><b>32</b><span>Today's Bookings</span></div>
+        <div class="kpi"><b>91%</b><span>Chair Utilisation</span></div>
+        <div class="kpi"><b>4</b><span>Pending Confirm</span></div>
+        <div class="kpi"><b>₹1.8L</b><span>Today's Revenue</span></div>
+      </div>
+      <table><thead><tr><th>Time</th><th>Client</th><th>Service</th><th>Stylist</th><th>Status</th></tr></thead>
+      <tbody>${APPOINTMENTS.map(a=>`<tr><td>${a.time}</td><td>${a.client}</td><td>${a.service}</td><td>${a.staff}</td><td>${badgeHtml(a.status)}</td></tr>`).join('')}</tbody></table>`;
+  } else if(sec==='appointments'){
+    c.innerHTML=`<table><thead><tr><th>Time</th><th>Client</th><th>Service</th><th>Stylist</th><th>Status</th><th></th></tr></thead>
+      <tbody>${APPOINTMENTS.map(a=>`<tr><td>${a.time}</td><td>${a.client}</td><td>${a.service}</td><td>${a.staff}</td><td>${badgeHtml(a.status)}</td><td><span class="mini-link">Edit</span></td></tr>`).join('')}</tbody></table>`;
+  } else if(sec==='staffSchedule'){
+    c.innerHTML=`<table><thead><tr><th>Stylist</th><th>Working Hours</th><th>Day Off</th><th></th></tr></thead>
+      <tbody>${STAFF_SCHEDULE.map(s=>`<tr><td>${s.name}</td><td>${s.hours}</td><td>${s.off}</td><td><span class="mini-link">Edit Hours</span></td></tr>`).join('')}</tbody></table>`;
+  } else if(sec==='customers'){
+    c.innerHTML=`<table><thead><tr><th>Customer</th><th>Visits</th><th>Loyalty Points</th><th>Last Visit</th></tr></thead>
+      <tbody>${CUSTOMERS.map(cu=>`<tr><td>${cu.name}</td><td>${cu.visits}</td><td>${cu.points}</td><td>${cu.last}</td></tr>`).join('')}</tbody></table>`;
+  } else if(sec==='servicesPricing'){
+    c.innerHTML=`<table><thead><tr><th>Service</th><th>Category</th><th>For</th><th>Price</th><th></th></tr></thead>
+      <tbody>${SERVICES.map(s=>`<tr><td>${s.name}</td><td>${s.cat}</td><td style="text-transform:capitalize;">${s.for}</td><td>₹${s.price.toLocaleString('en-IN')}</td><td><span class="mini-link">Edit</span></td></tr>`).join('')}</tbody></table>`;
+  } else if(sec==='offers'){
+    c.innerHTML=`<table><thead><tr><th>Offer</th><th>Audience</th><th>Valid Till</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>20% off Bridal Packages</td><td>Women</td><td>31 Jul 2026</td><td><span class="badge confirmed">Active</span></td></tr>
+        <tr><td>₹500 off First Colour</td><td>New Clients</td><td>Ongoing</td><td><span class="badge confirmed">Active</span></td></tr>
+        <tr><td>15% off Grooming, Tue–Thu</td><td>Men</td><td>Ongoing</td><td><span class="badge confirmed">Active</span></td></tr>
+        <tr><td>Back-to-School Kids Cut ₹699</td><td>Kids</td><td>15 Aug 2026</td><td><span class="badge pending">Scheduled</span></td></tr>
+      </tbody></table>`;
+  } else if(sec==='reports'){
+    c.innerHTML=`<div class="admin-kpis">
+        <div class="kpi"><b>₹38.2L</b><span>Monthly Revenue</span></div>
+        <div class="kpi"><b>412</b><span>Bookings This Month</span></div>
+        <div class="kpi"><b>78%</b><span>Repeat Client Rate</span></div>
+        <div class="kpi"><b>Vikram S.</b><span>Top Stylist</span></div>
+      </div>
+      <table><thead><tr><th>Category</th><th>Share of Revenue</th></tr></thead>
+      <tbody>
+        <tr><td>Colour Services</td><td>38%</td></tr>
+        <tr><td>Bridal Packages</td><td>27%</td></tr>
+        <tr><td>Hair Cuts &amp; Styling</td><td>19%</td></tr>
+        <tr><td>Grooming &amp; Skin</td><td>16%</td></tr>
+      </tbody></table>`;
+  }
+}
+document.querySelectorAll('#admin-side a').forEach(a=>{
+  a.addEventListener('click',()=>renderAdmin(a.dataset.sec));
+});
+renderAdmin('dashboard');
+</script>
+</body>
+</html
